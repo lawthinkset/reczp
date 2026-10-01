@@ -135,18 +135,42 @@ def get_fallback_caption(subject="calls"):
     ]
     return random.choice(captions)
 
-def generate_pinned_comment(caption):
+def generate_pinned_comment(caption=""):
     """
-    Creates the pinned comment text using the same title & description,
-    plus a link or CTA placeholder for future pinned URLs.
+    Creates a dedicated high-converting pinned comment with product details and link to https://recepzo.com/
     """
-    custom_link = os.environ.get('PINNED_COMMENT_LINK', '').strip()
-    if custom_link:
-        link_cta = f"\n\n👉 Try RecepZo 24/7 AI Receptionist: {custom_link}"
-    else:
-        link_cta = "\n\n👉 Never miss another customer call! Try your 24/7 AI Receptionist today at recepzo.com 📞✨"
+    link = os.environ.get('PINNED_COMMENT_LINK', 'https://recepzo.com/').strip() or 'https://recepzo.com/'
+    custom_text = os.environ.get('PINNED_COMMENT_TEXT', '').strip()
+    if custom_text:
+        return f"{custom_text}\n\n👉 {link}"
 
-    return f"{caption}{link_cta}"
+    pinned_options = [
+        (
+            f"📞 Never miss another customer call or lead again!\n\n"
+            f"RecepZo gives your business a dedicated 24/7 AI Receptionist that:\n"
+            f"✅ Answers calls on the first ring (no hold times)\n"
+            f"✅ Automatically books appointments on your calendar\n"
+            f"✅ Resolves caller FAQs & escalates emergencies\n"
+            f"✅ Keeps your existing phone number\n\n"
+            f"👉 Claim your AI Receptionist & get started: {link}"
+        ),
+        (
+            f"🚀 Full front-desk coverage without the $40,000 salary!\n\n"
+            f"RecepZo is your 24/7 intelligent AI phone receptionist. Perfect for clinics, law offices, salons, contractors, and busy service teams.\n\n"
+            f"👉 Try RecepZo AI Receptionist today: {link}"
+        ),
+        (
+            f"✨ One saved customer pays for the entire month.\n\n"
+            f"Stop losing business while you're busy or after hours. Let RecepZo answer every incoming call 24/7/365.\n\n"
+            f"👉 Learn more and get your dedicated number: {link}"
+        ),
+        (
+            f"📲 Over 60% of callers hang up if they reach voicemail!\n\n"
+            f"With RecepZo, a human-sounding AI answers 24/7 within one ring, collects details, and books appointments directly.\n\n"
+            f"👉 Never lose another customer: {link}"
+        )
+    ]
+    return random.choice(pinned_options)
 
 def select_video(video_list, published):
     published_names = {p.get('filename') for p in published}
