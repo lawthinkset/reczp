@@ -207,5 +207,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "Small_business_owner_using_AI_20261001055448.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "2395534711252569",
+        "comment_id": "2395534711252569_3635897709908331",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
