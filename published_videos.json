@@ -245,5 +245,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "Business_owners_comparing_AI_rec\u2026_20261001070254.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "28431441609816946",
+        "comment_id": "28431441609816946_1118960833859706",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
