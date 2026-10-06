@@ -321,5 +321,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "Entrepreneur_receiving_automated\u2026_20261001090730.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "2179097432959209",
+        "comment_id": "2179097432959209_2716463192087965",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
