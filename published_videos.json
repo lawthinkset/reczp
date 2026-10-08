@@ -378,5 +378,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "AI_call_answering_software_demo_20261001060116.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "1015266704864911",
+        "comment_id": "1015266704864911_1772457073960026",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
