@@ -587,5 +587,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "Business_owner_panics_over_phone_20261001085624.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "1800740454297674",
+        "comment_id": "1800740454297674_1292379992963013",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
