@@ -796,5 +796,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "AI_receptionist_booking_appointm\u2026_20261001055715.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "1632286211921192",
+        "comment_id": "1632286211921192_1424084707449914",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
