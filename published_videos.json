@@ -910,5 +910,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "AI_answers_restaurant_owner_phone_20261001065511.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "1580606136690783",
+        "comment_id": "1580606136690783_976229581567845",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
