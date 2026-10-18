@@ -986,5 +986,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "Business_owner_viewing_AI_recept\u2026_20261001092742.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "1081907804666829",
+        "comment_id": "1081907804666829_4563582877221018",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
