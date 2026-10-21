@@ -1100,5 +1100,24 @@
         "page_name": "Recepzo"
       }
     ]
+  },
+  {
+    "filename": "Entrepreneur_demonstrates_AI_pho\u2026_20261001091753.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "3433485520172049",
+        "comment_id": "3433485520172049_991742897323288",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      }
+    ]
   }
 ]
