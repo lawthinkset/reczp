@@ -17,6 +17,8 @@ from dotenv import load_dotenv
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 load_dotenv()
 
@@ -28,11 +30,11 @@ def check_ffmpeg():
     ffmpeg_ok = shutil.which('ffmpeg') is not None
     ffprobe_ok = shutil.which('ffprobe') is not None
     if ffmpeg_ok and ffprobe_ok:
-        print("  ✅ FFmpeg & FFprobe installed.")
+        print("  [OK] FFmpeg & FFprobe installed.")
     else:
-        print(f"  ⚠️ FFmpeg found: {ffmpeg_ok}, FFprobe found: {ffprobe_ok}")
+        print(f"  [WARN] FFmpeg found: {ffmpeg_ok}, FFprobe found: {ffprobe_ok}")
 
-    print("  ℹ️ Video Audio Specifications for Instagram Reels:")
+    print("  [INFO] Video Audio Specifications for Instagram Reels:")
     print("     - Codec: AAC (-c:a aac)")
     print("     - Sample Rate: 44,100 Hz (-ar 44100) or 48,000 Hz")
     print("     - Channels: Stereo 2-channel (-ac 2)")
@@ -47,7 +49,7 @@ def check_meta_connection():
     ig_env_id = os.environ.get('INSTAGRAM_ACCOUNT_ID', '').strip()
 
     if not page_id or not page_token:
-        print("  ❌ FB_PAGE_ID or FB_PAGE_ACCESS_TOKEN is missing from your environment / .env!")
+        print("  [ERROR] FB_PAGE_ID or FB_PAGE_ACCESS_TOKEN is missing from your environment / .env!")
         print("     Please set FB_PAGE_ID and FB_PAGE_ACCESS_TOKEN.")
         return
 
@@ -63,12 +65,12 @@ def check_meta_connection():
         resp = requests.get(page_url, params={'access_token': page_token, 'fields': 'id,name,link'}, timeout=15)
         if resp.status_code == 200:
             p_data = resp.json()
-            print(f"  ✅ Facebook Page Connected: {p_data.get('name')} (ID: {p_data.get('id')})")
+            print(f"  [OK] Facebook Page Connected: {p_data.get('name')} (ID: {p_data.get('id')})")
         else:
-            print(f"  ❌ Failed to verify Facebook Page ({resp.status_code}): {resp.text}")
+            print(f"  [ERROR] Failed to verify Facebook Page ({resp.status_code}): {resp.text}")
             return
     except Exception as e:
-        print(f"  ❌ Error contacting Facebook Graph API: {e}")
+        print(f"  [ERROR] Error contacting Facebook Graph API: {e}")
         return
 
     # 2. Check Connected Instagram Account
@@ -90,14 +92,14 @@ def check_meta_connection():
                 ig_id = ig_account.get('id')
                 ig_user = ig_account.get('username', 'Unknown')
                 followers = ig_account.get('followers_count', 'N/A')
-                print(f"  ✅ LINKED INSTAGRAM ACCOUNT FOUND!")
+                print(f"  [OK] LINKED INSTAGRAM ACCOUNT FOUND!")
                 print(f"     - Username: @{ig_user}")
                 print(f"     - Account ID: {ig_id}")
                 if followers != 'N/A':
                     print(f"     - Followers: {followers}")
-                print(f"  🎉 The RecepZo pipeline can publish directly to @{ig_user}!")
+                print(f"  [SUCCESS] The RecepZo pipeline can publish directly to @{ig_user}!")
             else:
-                print("  ❌ NO LINKED INSTAGRAM PROFESSIONAL ACCOUNT FOUND ON THIS FACEBOOK PAGE.")
+                print("  [ERROR] NO LINKED INSTAGRAM PROFESSIONAL ACCOUNT FOUND ON THIS FACEBOOK PAGE.")
                 print("\n  👉 To fix this and enable Instagram publishing:")
                 print("     1. Switch your Instagram account to a Professional (Creator or Business) Account in Instagram App Settings.")
                 print("     2. Open Meta Business Suite (https://business.facebook.com/) or Facebook Page Settings.")
@@ -105,9 +107,9 @@ def check_meta_connection():
                 print("     4. Click 'Connect Account' and log in to link your Instagram account to this Facebook Page.")
                 print("     5. Once connected, re-run this script or trigger the GitHub workflow — it will automatically detect and publish!")
         else:
-            print(f"  ⚠️ Failed to check linked Instagram accounts ({resp.status_code}): {resp.text}")
+            print(f"  [WARN] Failed to check linked Instagram accounts ({resp.status_code}): {resp.text}")
     except Exception as e:
-        print(f"  ❌ Error querying Instagram accounts: {e}")
+        print(f"  [ERROR] Error querying Instagram accounts: {e}")
 
     # 3. Check Token Permissions
     print("\n[4] Checking Access Token Permissions...")
@@ -123,14 +125,14 @@ def check_meta_connection():
             required_ig_scopes = ['instagram_basic', 'instagram_content_publish']
             missing = [s for s in required_ig_scopes if s not in scopes]
             if not missing:
-                print("  ✅ All required Instagram publishing permissions are granted!")
+                print("  [OK] All required Instagram publishing permissions are granted!")
             else:
-                print(f"  ⚠️ Missing Instagram permissions: {missing}")
+                print(f"  [WARN] Missing Instagram permissions: {missing}")
                 print("     Ensure your Meta App / Page token has: instagram_basic, instagram_content_publish")
         else:
-            print("  ℹ️ Note: Token debug requires app secret or user token with debug_token access.")
+            print("  [INFO] Note: Token debug requires app secret or user token with debug_token access.")
     except Exception as e:
-        print(f"  ℹ️ Could not check debug token: {e}")
+        print(f"  [INFO] Could not check debug token: {e}")
 
 if __name__ == '__main__':
     print("=" * 65)
