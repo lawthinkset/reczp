@@ -30,7 +30,9 @@ def check_secrets():
         print("[INFO] POLLINATIONS_API_KEY not set. Built-in high-converting RecepZo AI receptionist captions will be used.")
 
     if os.environ.get('INSTAGRAM_ACCOUNT_ID'):
-        print(f"[OK] Instagram publishing enabled: {os.environ.get('INSTAGRAM_ACCOUNT_ID')}")
+        print(f"[OK] Instagram publishing explicitly configured: {os.environ.get('INSTAGRAM_ACCOUNT_ID')}")
+    else:
+        print("[INFO] INSTAGRAM_ACCOUNT_ID not explicitly set in secrets. Pipeline will auto-discover the Instagram Professional account linked to your Facebook Page.")
 
     print("[OK] Environment validation successful.\n")
 
@@ -71,10 +73,9 @@ def main():
         print(f"[ERROR] Failed to process video: {selected_raw}")
         return
 
-    # Step 4: Publish to platforms
-    print("\n--- Step 3: Publishing to Facebook (Reels + Pinned Comments + Stories) ---")
-    publish_ig = bool(os.environ.get('INSTAGRAM_ACCOUNT_ID'))
-    results = publish(processed_path, publish_to_facebook=True, publish_to_instagram=publish_ig)
+    # Step 4: Publish to platforms (Facebook + connected Instagram)
+    print("\n--- Step 3: Publishing to Facebook & Instagram ---")
+    results = publish(processed_path, publish_to_facebook=True, publish_to_instagram=True)
 
     # Record
     entry = {

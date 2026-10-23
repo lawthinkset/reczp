@@ -19,6 +19,17 @@ def get_video_dimensions(input_path):
     except Exception:
         return 720, 1280
 
+def has_audio_stream(input_path):
+    """
+    Checks if the input video file contains at least one audio stream.
+    """
+    try:
+        cmd = ['ffprobe', '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=codec_name', '-of', 'csv=p=0', input_path]
+        out = subprocess.check_output(cmd, text=True).strip()
+        return bool(out)
+    except Exception:
+        return True
+
 def process_video(input_path, output_dir='Processed_Videos'):
     if not is_ffmpeg_available():
         print("[WARN] ffmpeg not found in PATH. Skipping ffmpeg processing.")
@@ -35,6 +46,8 @@ def process_video(input_path, output_dir='Processed_Videos'):
     print(f"[PROCESS] Processing video: {filename}...")
 
     w, h = get_video_dimensions(input_path)
+    audio_present = has_audio_stream(input_path)
+
     # Remove Google Gemini watermark from the bottom-right corner
     delogo_w = max(40, int(w * 0.13))
     delogo_h = max(40, int(h * 0.09))
@@ -49,16 +62,33 @@ def process_video(input_path, output_dir='Processed_Videos'):
     ]
     vf_chain = ",".join(vf_filters)
 
-    cmd = [
-        'ffmpeg', '-y', '-i', input_path,
-        '-vf', vf_chain,
-        '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11',
-        '-c:v', 'libx264', '-preset', 'medium', '-crf', '23',
-        '-c:a', 'aac', '-b:a', '128k',
-        '-movflags', '+faststart',
-        '-t', '60',
-        output_path
-    ]
+    # Strictly adhere to Meta / Instagram Reels specifications:
+    # Audio: AAC, 128kbps, 44100Hz, stereo (ac=2), loudness normalized
+    # Video: H.264, yuv420p, +faststart
+    if audio_present:
+        cmd = [
+            'ffmpeg', '-y', '-i', input_path,
+            '-vf', vf_chain,
+            '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11',
+            '-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-pix_fmt', 'yuv420p',
+            '-c:a', 'aac', '-b:a', '128k', '-ar', '44100', '-ac', '2',
+            '-movflags', '+faststart',
+            '-t', '60',
+            output_path
+        ]
+    else:
+        # Generate silent stereo AAC track to ensure Instagram/Facebook ingests without error
+        cmd = [
+            'ffmpeg', '-y', '-i', input_path,
+            '-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=44100',
+            '-vf', vf_chain,
+            '-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-pix_fmt', 'yuv420p',
+            '-c:a', 'aac', '-b:a', '128k', '-ar', '44100', '-ac', '2',
+            '-shortest',
+            '-movflags', '+faststart',
+            '-t', '60',
+            output_path
+        ]
 
     try:
         subprocess.run(cmd, check=True, capture_output=True, text=True)

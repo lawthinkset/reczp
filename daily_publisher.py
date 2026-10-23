@@ -6,6 +6,7 @@ import re
 import urllib.parse
 import requests
 from upload.upload_facebook import upload_reel, upload_story
+from upload.upload_instagram import upload_reel as ig_reel, get_connected_instagram_account
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -203,7 +204,7 @@ def resolve_target_pages():
     Resolves Facebook target pages and page access tokens.
     Supports:
     1. FB_PAGE_TOKENS_JSON (pre-stored dictionary mapping page_id -> {name, token})
-    2. FB_PAGE_ID + FB_PAGE_ACCESS_TOKEN (primary mode for Kathy's Guitar)
+    2. FB_PAGE_ID + FB_PAGE_ACCESS_TOKEN (primary mode for RecepZo)
     """
     tokens_json_env = os.environ.get('FB_PAGE_TOKENS_JSON', '').strip()
     if tokens_json_env:
@@ -277,7 +278,7 @@ def publish_to_facebook_pages(video_path, caption, pinned_comment, page_configs)
 
     return results
 
-def publish(video_path, publish_to_facebook=True, publish_to_instagram=False):
+def publish(video_path, publish_to_facebook=True, publish_to_instagram=True):
     filename = os.path.basename(video_path)
     caption = generate_caption(filename)
     pinned_comment = generate_pinned_comment(caption)
@@ -286,9 +287,11 @@ def publish(video_path, publish_to_facebook=True, publish_to_instagram=False):
     print(f"[PINNED COMMENT] {pinned_comment}")
 
     results = []
+    pages = []
+    if publish_to_facebook or publish_to_instagram:
+        pages = resolve_target_pages()
 
     if publish_to_facebook:
-        pages = resolve_target_pages()
         if not pages:
             print("[WARN] No target Facebook pages resolved. Please configure FB_PAGE_ID + FB_PAGE_ACCESS_TOKEN.")
         else:
@@ -296,23 +299,40 @@ def publish(video_path, publish_to_facebook=True, publish_to_instagram=False):
             results.extend(fb_results)
 
     if publish_to_instagram:
-        from upload.upload_instagram import upload_reel as ig_reel
         ig_account_id = os.environ.get('INSTAGRAM_ACCOUNT_ID', '').strip()
         single_page_token = os.environ.get('FB_PAGE_ACCESS_TOKEN', '').strip()
-        if not single_page_token and 'pages' in locals() and pages:
-            single_page_token = pages[0].get('token', '')
+        first_page_id = None
+
+        if pages:
+            if not single_page_token:
+                single_page_token = pages[0].get('token', '')
+            first_page_id = pages[0].get('id', '')
+        else:
+            first_page_id = os.environ.get('FB_PAGE_ID', '').strip()
+
+        # Auto-detect linked Instagram Business/Creator account if not explicitly set
+        if not ig_account_id and first_page_id and single_page_token:
+            auto_id, auto_username = get_connected_instagram_account(first_page_id, single_page_token)
+            if auto_id:
+                ig_account_id = str(auto_id)
+                print(f"\n[IG AUTO-DETECT] Found linked Instagram Account: @{auto_username} (ID: {ig_account_id}) on Facebook Page {first_page_id}")
 
         if ig_account_id and single_page_token:
-            print(f"\n[IG] Publishing exclusively to Instagram Reels tab (no profile grid): {ig_account_id}")
-            results.append(ig_reel(
-                video_path,
-                caption,
+            share_to_feed = os.environ.get('IG_SHARE_TO_FEED', 'true').lower() in ('1', 'true', 'yes')
+            print(f"\n[IG] Publishing Reel to Instagram Account: {ig_account_id} (share_to_feed={share_to_feed})")
+            ig_res = ig_reel(
+                video_path=video_path,
+                caption=caption,
                 page_token=single_page_token,
                 ig_account_id=ig_account_id,
-                share_to_feed=False  # Only on Reels tab, not profile grid
-            ))
+                share_to_feed=share_to_feed
+            )
+            results.append(ig_res)
         elif not ig_account_id:
-            print("\n[SKIP] INSTAGRAM_ACCOUNT_ID not configured.")
+            print("\n[INFO] Instagram publishing skipped: No Instagram Professional Account linked to Facebook Page.")
+            print("  How to connect:")
+            print("  1. In Meta Business Suite -> Settings -> Business Assets, link your Instagram Professional account to your Facebook Page.")
+            print("  2. Or set INSTAGRAM_ACCOUNT_ID secret in GitHub repository settings.")
         elif not single_page_token:
             print("\n[SKIP] Facebook Page access token not found for Instagram.")
 
@@ -329,8 +349,7 @@ def run_daily_publish(processed_videos):
     filename = os.path.basename(video)
     print(f"\n[SELECTED VIDEO] {filename}")
 
-    publish_ig = bool(os.environ.get('INSTAGRAM_ACCOUNT_ID'))
-    results = publish(video, publish_to_facebook=True, publish_to_instagram=publish_ig)
+    results = publish(video, publish_to_facebook=True, publish_to_instagram=True)
 
     entry = {
         'filename': filename,

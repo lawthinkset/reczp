@@ -6,7 +6,37 @@ import subprocess
 GRAPH_API_VERSION = 'v21.0'
 GRAPH_URL = f'https://graph.facebook.com/{GRAPH_API_VERSION}'
 
-def upload_reel(video_path, caption="", page_token=None, ig_account_id=None, share_to_feed=False):
+def get_connected_instagram_account(page_id, page_token):
+    """
+    Auto-discovers the Instagram Professional Account connected to a Facebook Page.
+    Returns (account_id, username) or (None, None).
+    """
+    if not page_id or not page_token:
+        return None, None
+
+    url = f"{GRAPH_URL}/{page_id}"
+    params = {
+        'fields': 'instagram_business_account{id,username,name},connected_instagram_account{id,username,name}',
+        'access_token': page_token
+    }
+    try:
+        resp = requests.get(url, params=params, timeout=20)
+        if resp.status_code == 200:
+            data = resp.json()
+            ig_bus = data.get('instagram_business_account')
+            if ig_bus and ig_bus.get('id'):
+                return ig_bus.get('id'), ig_bus.get('username') or ig_bus.get('name') or 'Instagram'
+            ig_conn = data.get('connected_instagram_account')
+            if ig_conn and ig_conn.get('id'):
+                return ig_conn.get('id'), ig_conn.get('username') or ig_conn.get('name') or 'Instagram'
+        else:
+            print(f"  [DEBUG] Instagram detection response ({resp.status_code}): {resp.text}")
+    except Exception as e:
+        print(f"  [WARN] Error querying connected Instagram account from Facebook Page: {e}")
+
+    return None, None
+
+def upload_reel(video_path, caption="", page_token=None, ig_account_id=None, share_to_feed=None):
     page_token = page_token or os.environ.get('FB_PAGE_ACCESS_TOKEN', '')
     ig_account_id = ig_account_id or os.environ.get('INSTAGRAM_ACCOUNT_ID', '')
 
@@ -18,17 +48,21 @@ def upload_reel(video_path, caption="", page_token=None, ig_account_id=None, sha
         print(f"[ERROR] Video not found: {video_path}")
         return {'status': 'failed', 'platform': 'instagram'}
 
-    file_size = os.path.getsize(video_path)
-    print(f"[IG] Uploading Reel: {os.path.basename(video_path)} ({file_size / 1024 / 1024:.1f}MB)")
+    # Determine feed sharing: defaults to True (shared on grid and reels) unless disabled
+    if share_to_feed is None:
+        share_to_feed = os.environ.get('IG_SHARE_TO_FEED', 'true').lower() in ('1', 'true', 'yes')
 
-    # Auto-compress if over 100MB
+    file_size = os.path.getsize(video_path)
+    print(f"[IG] Uploading Reel: {os.path.basename(video_path)} ({file_size / 1024 / 1024:.1f}MB, share_to_feed={share_to_feed})")
+
+    # Auto-compress if over 100MB while preserving audio specifications
     if file_size > 100 * 1024 * 1024:
         print("  Compressing video to fit under 100MB...")
         compressed_path = video_path.replace('.mp4', '_compressed.mp4')
         subprocess.run([
             'ffmpeg', '-y', '-i', video_path,
-            '-c:v', 'libx264', '-crf', '28', '-preset', 'fast',
-            '-c:a', 'aac', '-b:a', '96k',
+            '-c:v', 'libx264', '-crf', '28', '-preset', 'fast', '-pix_fmt', 'yuv420p',
+            '-c:a', 'aac', '-b:a', '128k', '-ar', '44100', '-ac', '2',
             '-fs', '95M',
             compressed_path
         ], capture_output=True)
@@ -37,18 +71,20 @@ def upload_reel(video_path, caption="", page_token=None, ig_account_id=None, sha
 
     # Step 1: Initialize Resumable Media Container
     feed_flag = 'true' if share_to_feed else 'false'
+    audio_name = os.environ.get('IG_AUDIO_NAME', 'Original Audio')
     init_url = f"{GRAPH_URL}/{ig_account_id}/media"
     init_data = {
         'media_type': 'REELS',
         'upload_type': 'resumable',
         'caption': caption,
-        'share_to_feed': feed_flag,  # 'false' ensures posting ONLY to Reels tab
+        'share_to_feed': feed_flag,
+        'audio_name': audio_name,
         'access_token': page_token
     }
     init_params = {
         'share_to_feed': feed_flag
     }
-    
+
     try:
         resp = requests.post(init_url, params=init_params, data=init_data, timeout=30)
     except Exception as e:
@@ -93,17 +129,18 @@ def upload_reel(video_path, caption="", page_token=None, ig_account_id=None, sha
     # Step 3: Wait for Meta processing
     for attempt in range(40):
         time.sleep(10)
-        status_url = f"{GRAPH_URL}/{container_id}?fields=status_code&access_token={page_token}"
+        status_url = f"{GRAPH_URL}/{container_id}?fields=status_code,status&access_token={page_token}"
         try:
             status_resp = requests.get(status_url, timeout=30)
             if status_resp.status_code == 200:
-                status = status_resp.json().get('status_code', '')
+                body = status_resp.json()
+                status = body.get('status_code', '')
                 if status == 'FINISHED':
                     print("  Processing complete!")
                     break
                 elif status == 'ERROR':
-                    print(f"  [ERROR] Media processing failed: {status_resp.json()}")
-                    return {'status': 'failed', 'platform': 'instagram'}
+                    print(f"  [ERROR] Media processing failed: {body}")
+                    return {'status': 'failed', 'platform': 'instagram', 'error': body}
         except Exception as e:
             print(f"  [WARN] Status check transient error: {e}")
         print(f"  Processing Reel... ({attempt + 1}/40)")
@@ -116,7 +153,7 @@ def upload_reel(video_path, caption="", page_token=None, ig_account_id=None, sha
         'creation_id': container_id,
         'access_token': page_token
     }
-    
+
     try:
         resp = requests.post(publish_url, data=publish_data, timeout=30)
     except Exception as e:
@@ -198,7 +235,7 @@ def upload_story(video_path, page_token=None, ig_account_id=None):
     # Step 3: Wait for Meta processing
     for attempt in range(30):
         time.sleep(10)
-        status_url = f"{GRAPH_URL}/{container_id}?fields=status_code&access_token={page_token}"
+        status_url = f"{GRAPH_URL}/{container_id}?fields=status_code,status&access_token={page_token}"
         try:
             status_resp = requests.get(status_url, timeout=30)
             if status_resp.status_code == 200:
