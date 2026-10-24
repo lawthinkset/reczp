@@ -1305,5 +1305,29 @@
         "media_id": "18126561568855055"
       }
     ]
+  },
+  {
+    "filename": "AI_receptionist_stops_lost_leads_20261024211122.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "1640312140885191",
+        "comment_id": "1640312140885191_1802910964148015",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "18103795448628186"
+      }
+    ]
   }
 ]
