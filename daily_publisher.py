@@ -13,6 +13,81 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 PUBLISHED_FILE = 'published_videos.json'
 
+INDUSTRY_PROFILES = {
+    'law': {
+        'name': 'Law Firms & Solo Attorneys',
+        'hook': '⚖️ Lawyers: Stop losing high-value legal cases to missed phone calls!',
+        'body': (
+            "Over 68% of legal clients hire the first attorney who answers their call. "
+            "RecepZo provides a dedicated 24/7 AI Phone Receptionist that answers instantly on the 1st ring, "
+            "conducts preliminary client intake, screens case details, and books consultations directly on your calendar."
+        ),
+        'keywords': ['virtual receptionist for law firms', 'legal intake automation', 'law firm phone answering', 'after hours attorney calls', 'legal tech'],
+        'hashtags': ['#LawFirmMarketing', '#LegalTech', '#SoloAttorney', '#LawPractice', '#AIReceptionist', '#VirtualReceptionist', '#RecepZo', '#LegalIntake']
+    },
+    'dental': {
+        'name': 'Dental Practices & Orthodontics',
+        'hook': '🦷 Dentists: Are after-hours missed calls costing your clinic thousands in patient revenue?',
+        'body': (
+            "Patients experiencing tooth pain or needing cleanings won't leave voicemails—they call the next practice on Google. "
+            "RecepZo AI answers 24/7, schedules dental appointments, handles routine clinic FAQs, and escalates emergency dental calls."
+        ),
+        'keywords': ['dental receptionist', 'dentist appointment booking', 'after hours patient answering', 'dental office automation', 'clinic management'],
+        'hashtags': ['#DentalOffice', '#DentistLife', '#DentalMarketing', '#ClinicManagement', '#AIReceptionist', '#RecepZo', '#DentalCare']
+    },
+    'medspa': {
+        'name': 'Med Spas & Aesthetics Clinics',
+        'hook': '✨ Med Spas: Never miss a high-ticket consultation booking again!',
+        'body': (
+            "Prospective aesthetic clients call after work hours. If no one answers, they book elsewhere. "
+            "RecepZo AI answers instantly, answers treatment questions about Botox, fillers, and lasers, and locks in consultation bookings."
+        ),
+        'keywords': ['med spa phone answering', 'aesthetic clinic receptionist', 'botox consultation booking', 'after hours patient answering', 'med spa marketing'],
+        'hashtags': ['#MedSpaBusiness', '#AestheticsClinic', '#SpaOwner', '#ClinicMarketing', '#AIReceptionist', '#RecepZo', '#BotoxBooking']
+    },
+    'auto': {
+        'name': 'Auto Repair Shops & Mechanics',
+        'hook': '🔧 Mechanics: Stop dropping your tools to answer quote calls all day!',
+        'body': (
+            "When your hands are covered in grease, answering the phone is impossible. But missed calls mean missed repair jobs. "
+            "RecepZo AI answers 24/7 on the 1st ring, collects vehicle make/model details, provides basic estimates, and schedules service drop-offs."
+        ),
+        'keywords': ['auto repair shop answering service', 'mechanic phone answering', 'automotive shop receptionist', 'quote request phone agent', 'auto shop management'],
+        'hashtags': ['#AutoRepairShop', '#MechanicLife', '#AutoShopOwner', '#ShopManagement', '#AIReceptionist', '#RecepZo', '#AutoRepair']
+    },
+    'hvac': {
+        'name': 'HVAC, Plumbing & Home Service Contractors',
+        'hook': '❄️ Contractors: Capture high-ticket emergency calls even while on a roof or asleep!',
+        'body': (
+            "When a furnace breaks or a pipe bursts at 11 PM, the homeowner calls until someone answers. "
+            "RecepZo AI phone receptionist answers immediately, collects address and emergency details, and routes jobs straight to your field dispatch."
+        ),
+        'keywords': ['contractor answering service', 'HVAC phone answering', 'plumber emergency dispatch', 'field service receptionist', 'contractor leads'],
+        'hashtags': ['#HVACContractor', '#PlumbingBusiness', '#ContractorLife', '#HomeServices', '#AIReceptionist', '#RecepZo', '#FieldService']
+    },
+    'realestate': {
+        'name': 'Real Estate Agents & Property Managers',
+        'hook': '🏡 Realtors: Lock in prospective buyer inquiries and property tours 24/7!',
+        'body': (
+            "Sign calls and Zillow leads demand instant responses. "
+            "RecepZo AI answers every inbound property inquiry within 1 ring, collects buyer/renter qualifications, and schedules viewing walkthroughs."
+        ),
+        'keywords': ['AI receptionist for real estate', 'realtor phone answering', 'property management answering', 'lead qualification agent', 'real estate tech'],
+        'hashtags': ['#RealEstateAgent', '#RealtorMarketing', '#PropertyManagement', '#RealEstateTech', '#AIReceptionist', '#RecepZo', '#RealtorLife']
+    },
+    'general': {
+        'name': 'Small Businesses & Service Teams',
+        'hook': '📞 Over 67% of callers hang up if they reach voicemail! Stop losing revenue.',
+        'body': (
+            "Every missed call is a customer walking straight to your competitor. "
+            "RecepZo gives your business full front-desk coverage 24/7/365 without the $40,000 receptionist salary. "
+            "It answers on the 1st ring, schedules appointments, answers questions, and never takes a sick day."
+        ),
+        'keywords': ['AI phone receptionist', 'virtual receptionist for small business', '24/7 call answering service', 'never miss a customer call', 'front desk automation'],
+        'hashtags': ['#AIReceptionist', '#VirtualReceptionist', '#PhoneAnsweringService', '#NeverMissACall', '#SmallBusinessOwner', '#RecepZo', '#BusinessAutomation']
+    }
+}
+
 def load_published():
     if os.path.exists(PUBLISHED_FILE):
         try:
@@ -26,152 +101,138 @@ def save_published(data):
     with open(PUBLISHED_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2)
 
+def detect_industry(filename):
+    fn = filename.lower()
+    if any(k in fn for k in ['law', 'attorney', 'legal', 'lawyer']):
+        return 'law'
+    if any(k in fn for k in ['dent', 'teeth', 'tooth']):
+        return 'dental'
+    if any(k in fn for k in ['medspa', 'spa', 'clinic', 'botox', 'doctor', 'aesthetic']):
+        return 'medspa'
+    if any(k in fn for k in ['auto', 'mechanic', 'repair', 'car', 'garage']):
+        return 'auto'
+    if any(k in fn for k in ['hvac', 'plumb', 'pipe', 'roof', 'electric', 'contractor']):
+        return 'hvac'
+    if any(k in fn for k in ['realestate', 'realtor', 'property', 'house', 'agent']):
+        return 'realestate'
+    return 'general'
+
 def extract_subject_from_filename(filename):
-    """
-    Extracts descriptive keywords from video filename.
-    """
     name = os.path.splitext(filename)[0]
     name = re.sub(r'_\d{8,}', '', name)
     name = re.sub(r'\d+', '', name)
     name = name.replace('_', ' ').replace('-', ' ').strip()
     return name or "AI receptionist business phone answering"
 
-def clean_caption(text, subject="AI receptionist"):
+def generate_seo_title(filename, industry_key):
+    profile = INDUSTRY_PROFILES.get(industry_key, INDUSTRY_PROFILES['general'])
+    options = [
+        f"24/7 AI Receptionist for {profile['name']}: Never Miss a Call | RecepZo",
+        f"How {profile['name']} Automate 24/7 Phone Answering & Bookings | RecepZo",
+        f"AI Phone Receptionist for {profile['name']}: Answers on 1st Ring | RecepZo",
+        f"Stop Losing Customers to Voicemail: 24/7 AI Answering for {profile['name']}"
+    ]
+    return random.choice(options)[:80]
+
+def format_seo_caption(hook, body, industry_key):
+    profile = INDUSTRY_PROFILES.get(industry_key, INDUSTRY_PROFILES['general'])
+    kw_str = ", ".join(profile['keywords'])
+    ht_str = " ".join(profile['hashtags'])
+    
+    caption = (
+        f"{hook}\n\n"
+        f"{body}\n\n"
+        f"Why Businesses Choose RecepZo AI:\n"
+        f"✅ 24/7/365 Coverage: Answers every call on the 1st ring\n"
+        f"✅ Automated Bookings: Syncs directly to your calendar\n"
+        f"✅ Lead Qualification: Collects details & handles FAQs\n"
+        f"✅ Keep Your Number: Seamless call forwarding setup\n\n"
+        f"🔗 Try it free today: https://recepzo.com (Link in bio!)\n"
+        f"👉 Never lose another customer: recepzo.com\n\n"
+        f"Search keywords: {kw_str}\n\n"
+        f"{ht_str}"
+    )
+    return caption
+
+def clean_caption_text(text):
     if not text:
         return None
-    # 1. Remove think tags
     text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL | re.IGNORECASE)
-    # 2. Filter reasoning / meta lines
-    lines = text.split('\n')
-    filtered_lines = []
-    for line in lines:
-        l = line.strip()
-        if re.search(r'^(role\s*:?\s*assistant|reasoning\s*:|thought\s*:|thinking\s*:)', l, re.IGNORECASE):
+    lines = [l.strip() for l in text.split('\n') if l.strip()]
+    clean_lines = []
+    for l in lines:
+        if re.search(r'^(role\s*:|reasoning|thought|thinking|here is|here\'s|note:)', l, re.IGNORECASE):
             continue
-        if re.search(r'^(here\s+is|here\'s|as\s+requested|certainly|sure,|note:|\*using\s+key|\*this\s+caption|---)', l, re.IGNORECASE):
-            continue
-        filtered_lines.append(line)
-    text = '\n'.join(filtered_lines)
-    # 3. Remove Title / Description / Caption / Hashtags labels
-    text = re.sub(r'\*\*(title|description|caption|hashtags)[^\*]*\*\*[:\s]*', '', text, flags=re.IGNORECASE)
-    text = re.sub(r'^(title|description|caption|hashtags)\s*:\s*', '', text, flags=re.IGNORECASE | re.MULTILINE)
-    # 4. Remove Pollinations ads / footers
+        clean_lines.append(l)
+    text = '\n\n'.join(clean_lines)
+    text = re.sub(r'\*\*(title|caption|description|hashtags)[^\*]*\*\*[:\s]*', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'^(title|caption|description|hashtags)\s*:\s*', '', text, flags=re.IGNORECASE | re.MULTILINE)
     text = re.sub(r'(Support\s+Pollinations|Powered\s+by\s+Pollinations|🌸\s*Ad\s*🌸).*$', '', text, flags=re.IGNORECASE | re.DOTALL).strip()
-    # 5. Remove quotes, asterisks, and normalize spaces
     text = text.replace('"', '').replace('“', '').replace('”', '').replace('*', '').strip()
-    text = re.sub(r'\s+', ' ', text).strip()
+    return text if len(text) > 30 else None
 
-    # 6. Blacklist check - if ANY meta/reasoning words remain, reject
-    blacklist = [
-        'role assistant', 'assistant reasoning', 'reasoning', '<think>',
-        'we must produce', 'here is a', 'title:', 'description:',
-        'seo optimized', 'social media post', 'char)'
-    ]
-    lower_text = text.lower()
-    for bad in blacklist:
-        if bad in lower_text:
-            return None
+def generate_seo_content(filename=""):
+    industry_key = detect_industry(filename)
+    profile = INDUSTRY_PROFILES.get(industry_key, INDUSTRY_PROFILES['general'])
+    title = generate_seo_title(filename, industry_key)
 
-    if len(text) < 25:
-        return None
-
-    if len(text) > 280:
-        text = text[:280].rsplit(' ', 1)[0]
-
-    return text
-
-def generate_caption(filename=""):
     pollinations_key = os.environ.get('POLLINATIONS_API_KEY', '').strip()
-    subject = extract_subject_from_filename(filename) if filename else "AI receptionist call answering"
+    subject = extract_subject_from_filename(filename)
 
-    if not pollinations_key:
-        return get_fallback_caption(subject)
-
-    system_prompt = (
-        "You are an expert SaaS copywriter and viral marketer for RecepZo (recepzo.com), "
-        "an intelligent 24/7 AI phone receptionist that answers calls, books appointments, and captures every lead for small businesses. "
-        "OUTPUT ONLY the final single-line caption with hashtags. "
-        "NEVER output your thoughts, NEVER output reasoning, NEVER output role tags, "
-        "and NEVER use labels like Title: or Description:. "
-        "Start immediately with an emoji and a compelling hook."
-    )
-    user_prompt = (
-        f"Write a viral, compelling Facebook Reel caption about {subject} — "
-        f"how RecepZo AI Receptionist helps business owners never lose another customer to a missed call, "
-        f"answers 24/7 on the first ring, books appointments automatically, and gives total peace of mind. "
-        f"Include popular hashtags (#RecepZo #AIReceptionist #SmallBusiness #NeverMissACall #BusinessGrowth #AITechnology #CustomerService #FrontDesk). "
-        f"Under 220 characters."
-    )
-
-    try:
-        url = f"https://text.pollinations.ai/{urllib.parse.quote(user_prompt)}"
-        params = {
-            'system': system_prompt,
-            'model': 'openai',
-            'seed': random.randint(1, 999999)
-        }
-        headers = {'Authorization': f'Bearer {pollinations_key}'} if pollinations_key else {}
-        resp = requests.get(url, params=params, headers=headers, timeout=20)
-        if resp.status_code == 200:
-            cleaned = clean_caption(resp.text, subject)
-            if cleaned:
-                return cleaned
-            else:
-                print(f"  [WARN] Pollinations response contained meta/reasoning or failed validation. Using fallback.")
-    except Exception as e:
-        print(f"  [WARN] Pollinations caption generation failed: {e}")
-
-    return get_fallback_caption(subject)
-
-def get_fallback_caption(subject="calls"):
-    captions = [
-        "📞 Never lose another customer to a missed phone call! RecepZo answers 24/7 on the 1st ring 🚀 #RecepZo #AIReceptionist #SmallBusiness #CustomerService #NeverMissACall",
-        "⚡ Stop losing high-value clients while you're busy working. RecepZo AI books appointments 24/7 📅✨ #RecepZo #BusinessGrowth #AIReceptionist #Entrepreneur",
-        "🤖 Full front-desk coverage without the $40,000 salary! Meet RecepZo, your 24/7 AI Receptionist 💼📞 #RecepZo #SmallBusiness #AIReceptionist #FrontDesk #AITechnology",
-        "🎯 Zero hold times. Zero missed appointments. RecepZo answers every call and locks in bookings 24/7 📲 #RecepZo #CustomerService #AIReceptionist #SmallBusinessGrowth",
-        "✨ Sleep peacefully knowing your business phone is always answered by smart AI 🌙📞 #RecepZo #AIReceptionist #SmallBusiness #NeverMissACall #EntrepreneurLife",
-        "📈 Turn every incoming call into a booked customer — even after business hours with RecepZo 💡 #RecepZo #AIReceptionist #BusinessAutomation #CustomerService",
-        "🚀 No phone trees, no busy signals, just instant AI answering & scheduling for your business 📞🤖 #RecepZo #AIReceptionist #SmallBusiness #FrontDeskAutomation",
-        "💼 One saved customer pays for the entire month! Never miss a business opportunity again with RecepZo 📞✨ #RecepZo #AIReceptionist #SmallBusiness #NeverMissACall"
-    ]
-    return random.choice(captions)
-
-def generate_pinned_comment(caption=""):
-    """
-    Creates a dedicated high-converting pinned comment with product details and link to https://recepzo.com/
-    """
-    link = os.environ.get('PINNED_COMMENT_LINK', 'https://recepzo.com/').strip() or 'https://recepzo.com/'
-    custom_text = os.environ.get('PINNED_COMMENT_TEXT', '').strip()
-    if custom_text:
-        return f"{custom_text}\n\n👉 {link}"
-
-    pinned_options = [
-        (
-            f"📞 Never miss another customer call or lead again!\n\n"
-            f"RecepZo gives your business a dedicated 24/7 AI Receptionist that:\n"
-            f"✅ Answers calls on the first ring (no hold times)\n"
-            f"✅ Automatically books appointments on your calendar\n"
-            f"✅ Resolves caller FAQs & escalates emergencies\n"
-            f"✅ Keeps your existing phone number\n\n"
-            f"👉 Claim your AI Receptionist & get started: {link}"
-        ),
-        (
-            f"🚀 Full front-desk coverage without the $40,000 salary!\n\n"
-            f"RecepZo is your 24/7 intelligent AI phone receptionist. Perfect for clinics, law offices, salons, contractors, and busy service teams.\n\n"
-            f"👉 Try RecepZo AI Receptionist today: {link}"
-        ),
-        (
-            f"✨ One saved customer pays for the entire month.\n\n"
-            f"Stop losing business while you're busy or after hours. Let RecepZo answer every incoming call 24/7/365.\n\n"
-            f"👉 Learn more and get your dedicated number: {link}"
-        ),
-        (
-            f"📲 Over 60% of callers hang up if they reach voicemail!\n\n"
-            f"With RecepZo, a human-sounding AI answers 24/7 within one ring, collects details, and books appointments directly.\n\n"
-            f"👉 Never lose another customer: {link}"
+    ai_generated_body = None
+    if pollinations_key:
+        prompt = (
+            f"Write a high-converting, viral social media caption hook and explanation for RecepZo (recepzo.com). "
+            f"Industry: {profile['name']}. Video subject: {subject}. "
+            f"Explain how an AI receptionist answers phone calls on the 1st ring 24/7, books appointments, and eliminates missed leads. "
+            f"Write 2 concise, compelling paragraphs. No hashtags, no role tags, no markdown titles."
         )
-    ]
-    return random.choice(pinned_options)
+        for model in ['openai', 'mistral']:
+            try:
+                url = f"https://text.pollinations.ai/{urllib.parse.quote(prompt)}"
+                params = {'model': model, 'seed': random.randint(1, 999999)}
+                headers = {'Authorization': f'Bearer {pollinations_key}'}
+                resp = requests.get(url, params=params, headers=headers, timeout=12)
+                if resp.status_code == 200:
+                    cleaned = clean_caption_text(resp.text)
+                    if cleaned and 'role assistant' not in cleaned.lower():
+                        ai_generated_body = cleaned
+                        break
+            except Exception:
+                continue
+
+    if ai_generated_body:
+        caption = (
+            f"{profile['hook']}\n\n"
+            f"{ai_generated_body}\n\n"
+            f"Why Businesses Choose RecepZo AI:\n"
+            f"✅ 24/7/365 Coverage: Answers every call on the 1st ring\n"
+            f"✅ Automated Bookings: Syncs directly to your calendar\n"
+            f"✅ Lead Qualification: Collects details & handles FAQs\n"
+            f"✅ Keep Your Number: Seamless call forwarding setup\n\n"
+            f"🔗 Try it free today: https://recepzo.com (Link in bio!)\n"
+            f"👉 Never lose another customer: recepzo.com\n\n"
+            f"Search keywords: {', '.join(profile['keywords'])}\n\n"
+            f"{' '.join(profile['hashtags'])}"
+        )
+    else:
+        caption = format_seo_caption(profile['hook'], profile['body'], industry_key)
+
+    return title, caption, industry_key
+
+def generate_pinned_comment(industry_key='general'):
+    link = os.environ.get('PINNED_COMMENT_LINK', 'https://recepzo.com/').strip() or 'https://recepzo.com/'
+    profile = INDUSTRY_PROFILES.get(industry_key, INDUSTRY_PROFILES['general'])
+
+    return (
+        f"📞 Never miss another customer call, lead, or appointment!\n\n"
+        f"RecepZo provides a dedicated 24/7 AI Phone Receptionist for {profile['name']}:\n"
+        f"✅ Zero hold times — answers on the 1st ring\n"
+        f"✅ Direct calendar appointment scheduling\n"
+        f"✅ Resolves caller FAQs, captures contact info & escalates emergencies\n"
+        f"✅ Keeps your existing business phone number\n\n"
+        f"👉 Get started free today: {link}"
+    )
 
 def select_video(video_list, published):
     published_names = {p.get('filename') for p in published}
@@ -180,7 +241,6 @@ def select_video(video_list, published):
     if unpublished:
         return random.choice(unpublished)
 
-    # All published - weighted random from ALL videos
     if video_list:
         counts = {}
         for p in published:
@@ -194,18 +254,11 @@ def select_video(video_list, published):
             weight = max(1, 1000 // (3 ** min(count, 6)))
             weights.append(weight)
 
-        chosen = random.choices(video_list, weights=weights, k=1)[0]
-        return chosen
+        return random.choices(video_list, weights=weights, k=1)[0]
 
     return None
 
 def resolve_target_pages():
-    """
-    Resolves Facebook target pages and page access tokens.
-    Supports:
-    1. FB_PAGE_TOKENS_JSON (pre-stored dictionary mapping page_id -> {name, token})
-    2. FB_PAGE_ID + FB_PAGE_ACCESS_TOKEN (primary mode for RecepZo)
-    """
     tokens_json_env = os.environ.get('FB_PAGE_TOKENS_JSON', '').strip()
     if tokens_json_env:
         try:
@@ -229,7 +282,6 @@ def resolve_target_pages():
         except Exception as e:
             print(f"[WARN] Failed to parse FB_PAGE_TOKENS_JSON: {e}")
 
-    # Primary single page mode
     single_page_id = os.environ.get('FB_PAGE_ID', '').strip()
     single_page_token = os.environ.get('FB_PAGE_ACCESS_TOKEN', '').strip()
 
@@ -242,10 +294,7 @@ def resolve_target_pages():
 
     return []
 
-def publish_to_facebook_pages(video_path, caption, pinned_comment, page_configs):
-    """
-    Publishes the Reel, Pinned Comment, and Story to all configured Facebook pages.
-    """
+def publish_to_facebook_pages(video_path, title, caption, pinned_comment, page_configs):
     results = []
     print(f"\n[FB] Publishing to {len(page_configs)} Facebook Page(s)...")
 
@@ -255,10 +304,11 @@ def publish_to_facebook_pages(video_path, caption, pinned_comment, page_configs)
         token = p['token']
         print(f"\n--- Publishing to Facebook Page: {pname} (ID: {pid}) ---")
 
-        # 1. Reel + Pinned Comment
+        # 1. Reel + Title + Pinned Comment
         reel_res = upload_reel(
             video_path=video_path,
             caption=caption,
+            title=title,
             page_id=pid,
             page_token=token,
             pin_comment=True,
@@ -280,11 +330,12 @@ def publish_to_facebook_pages(video_path, caption, pinned_comment, page_configs)
 
 def publish(video_path, publish_to_facebook=True, publish_to_instagram=True):
     filename = os.path.basename(video_path)
-    caption = generate_caption(filename)
-    pinned_comment = generate_pinned_comment(caption)
+    title, caption, industry_key = generate_seo_content(filename)
+    pinned_comment = generate_pinned_comment(industry_key)
 
-    print(f"\n[SEO CAPTION] {caption}")
-    print(f"[PINNED COMMENT] {pinned_comment}")
+    print(f"\n[SEO TITLE] {title}")
+    print(f"[SEO CAPTION]\n{caption}")
+    print(f"[PINNED COMMENT]\n{pinned_comment}")
 
     results = []
     pages = []
@@ -295,7 +346,7 @@ def publish(video_path, publish_to_facebook=True, publish_to_instagram=True):
         if not pages:
             print("[WARN] No target Facebook pages resolved. Please configure FB_PAGE_ID + FB_PAGE_ACCESS_TOKEN.")
         else:
-            fb_results = publish_to_facebook_pages(video_path, caption, pinned_comment, pages)
+            fb_results = publish_to_facebook_pages(video_path, title, caption, pinned_comment, pages)
             results.extend(fb_results)
 
     if publish_to_instagram:
@@ -310,7 +361,6 @@ def publish(video_path, publish_to_facebook=True, publish_to_instagram=True):
         else:
             first_page_id = os.environ.get('FB_PAGE_ID', '').strip()
 
-        # Auto-detect linked Instagram Business/Creator account if not explicitly set
         if not ig_account_id and first_page_id and single_page_token:
             auto_id, auto_username = get_connected_instagram_account(first_page_id, single_page_token)
             if auto_id:
@@ -330,9 +380,6 @@ def publish(video_path, publish_to_facebook=True, publish_to_instagram=True):
             results.append(ig_res)
         elif not ig_account_id:
             print("\n[INFO] Instagram publishing skipped: No Instagram Professional Account linked to Facebook Page.")
-            print("  How to connect:")
-            print("  1. In Meta Business Suite -> Settings -> Business Assets, link your Instagram Professional account to your Facebook Page.")
-            print("  2. Or set INSTAGRAM_ACCOUNT_ID secret in GitHub repository settings.")
         elif not single_page_token:
             print("\n[SKIP] Facebook Page access token not found for Instagram.")
 

@@ -98,7 +98,7 @@ def post_pinned_comment(video_id, comment_text, page_token, max_retries=3, delay
     return comment_id
 
 
-def upload_reel(video_path, caption="", page_id=None, page_token=None, pin_comment=True, comment_text=None):
+def upload_reel(video_path, caption="", title=None, page_id=None, page_token=None, pin_comment=True, comment_text=None):
     """
     Uploads video as a Facebook Reel using the official 3-phase Reels Publishing API.
     Optionally posts a top/pinned comment.
@@ -156,10 +156,12 @@ def upload_reel(video_path, caption="", page_id=None, page_token=None, pin_comme
 
         # Step 3: Finish and Publish
         publish_url = f"{GRAPH_URL}/{page_id}/video_reels"
+        clean_title = (title or caption.split('\n')[0])[:80].strip()
         publish_data = {
             'upload_phase': 'finish',
             'video_id': video_id,
             'access_token': page_token,
+            'title': clean_title,
             'description': caption,
             'video_state': 'PUBLISHED'
         }

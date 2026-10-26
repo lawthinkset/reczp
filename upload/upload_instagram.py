@@ -71,7 +71,7 @@ def upload_reel(video_path, caption="", page_token=None, ig_account_id=None, sha
 
     # Step 1: Initialize Resumable Media Container
     feed_flag = 'true' if share_to_feed else 'false'
-    audio_name = os.environ.get('IG_AUDIO_NAME', 'Original Audio')
+    audio_name = os.environ.get('IG_AUDIO_NAME', 'RecepZo AI Receptionist • 24/7 Phone Answering')
     init_url = f"{GRAPH_URL}/{ig_account_id}/media"
     init_data = {
         'media_type': 'REELS',
