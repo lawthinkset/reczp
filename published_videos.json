@@ -1593,5 +1593,29 @@
         "media_id": "18143085490614179"
       }
     ]
+  },
+  {
+    "filename": "AI_answers_restaurant_owner_phone_20261001065511.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "2039288680117362",
+        "comment_id": "2039288680117362_1483794916971178",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "18089197757686958"
+      }
+    ]
   }
 ]
