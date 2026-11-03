@@ -1977,5 +1977,29 @@
         "media_id": "18132172330802099"
       }
     ]
+  },
+  {
+    "filename": "Small_business_owner_using_AI_20261001055448.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "2174087946545445",
+        "comment_id": "2174087946545445_1118772704212966",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "17915372013491194"
+      }
+    ]
   }
 ]
