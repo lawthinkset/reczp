@@ -2049,5 +2049,29 @@
         "media_id": "18130885541487500"
       }
     ]
+  },
+  {
+    "filename": "AI_receptionist_booking_business\u2026_20261001065127.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "2111438912831329",
+        "comment_id": "2111438912831329_1419373293251883",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "18455998282135556"
+      }
+    ]
   }
 ]
