@@ -2241,5 +2241,29 @@
         "media_id": "18099943397392548"
       }
     ]
+  },
+  {
+    "filename": "Entrepreneur_demonstrates_AI_pho\u2026_20261001091753.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "1447765530184672",
+        "comment_id": "1447765530184672_1128676126562777",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "18198902227381386"
+      }
+    ]
   }
 ]
