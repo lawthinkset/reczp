@@ -2457,5 +2457,29 @@
         "media_id": "18655411630054685"
       }
     ]
+  },
+  {
+    "filename": "AI_answers_business_phone_call_20261001065333.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "2279522486158834",
+        "comment_id": "2279522486158834_1289484703342846",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "17942336328403911"
+      }
+    ]
   }
 ]
