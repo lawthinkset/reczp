@@ -2577,5 +2577,29 @@
         "media_id": "18082697642380910"
       }
     ]
+  },
+  {
+    "filename": "Business_owners_comparing_AI_rec\u2026_20261001070254.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "1487788640228112",
+        "comment_id": "1487788640228112_1479521344147178",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "17898789231413850"
+      }
+    ]
   }
 ]
