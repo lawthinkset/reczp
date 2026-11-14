@@ -2793,5 +2793,29 @@
         "media_id": "18081820574399498"
       }
     ]
+  },
+  {
+    "filename": "AI_voice_assistant_booking_appoi\u2026_20261001065201.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "2327022268147903",
+        "comment_id": "2327022268147903_1184191990945805",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "failed",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "17908551519347541"
+      }
+    ]
   }
 ]
