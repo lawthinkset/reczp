@@ -2985,5 +2985,29 @@
         "media_id": "18382286173211012"
       }
     ]
+  },
+  {
+    "filename": "Entrepreneur_receiving_automated\u2026_20261001090730.mp4",
+    "results": [
+      {
+        "status": "success",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "video_id": "2019602015370057",
+        "comment_id": "2019602015370057_1447800316918481",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "18078952721461752"
+      }
+    ]
   }
 ]
