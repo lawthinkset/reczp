@@ -3032,5 +3032,28 @@
         "media_id": "18139571569649493"
       }
     ]
+  },
+  {
+    "filename": "Business_owners_comparing_AI_rec\u2026_20261001070254.mp4",
+    "results": [
+      {
+        "status": "failed",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "error": "{\"error\":{\"message\":\"Confirm your identity before you can publish as this Page. Open the Facebook app on your phone and follow the instructions.\",\"type\":\"OAuthException\",\"code\":368,\"error_data\":{\"sentry_block_data\":\"AetnYLB0bewCYvqQm37qAW2iLJ1jM0RrXVRb0FFB9rxeLk5p-N5yuOa3TVfJryq3icOfN_ggQZcDjyxVn55xQIV1_IPmF_9n2GXH4EiIJk7X_LHPInvx4YSmhPnXodbbxh6uXAdErza2Ez5hbWUwWpg0BEr3fHuyT30knvqKYuGW198qDcs9JVqyxFHCeFrx2wx8FHwpEkFTx1l5KN_IMhiyiTQ2A4lVsiBE9BVUbFolCLpOM_kUiEkhxi97fxzZTVVaClStY5CR0NWvtVgXooeRv5NIvw0ApVPYnkzhgwp_CKglMqIZ2CPGwYVD5IApjlmqC0FEJiWumQKo-05fWsTAkTDWZMm3rSyj7Npxp20\",\"help_center_id\":0,\"is_silent\":false},\"error_subcode\":4854002,\"error_user_msg\":\"\",\"fbtrace_id\":\"AxUt_vGISFKHdcVcjt5LJLi\"}}",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "18109063208201609"
+      }
+    ]
   }
 ]
