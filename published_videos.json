@@ -3538,5 +3538,28 @@
         "media_id": "18121546327796424"
       }
     ]
+  },
+  {
+    "filename": "AI_answers_restaurant_owner_phone_20261001065511.mp4",
+    "results": [
+      {
+        "status": "failed",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "error": "{\"error\":{\"message\":\"Confirm your identity before you can publish as this Page. Open the Facebook app on your phone and follow the instructions.\",\"type\":\"OAuthException\",\"code\":368,\"error_data\":{\"sentry_block_data\":\"Aev1r7ta9FKYtnVXMzNwBBENWitVnQtxvNPdaTY-gWFOSWytFqY8sURIredFXSR97OC2rx4PHWMKw9pJMu_nkvziUUQwwE9HA5GN1TNB90qLaH6K6IA9Um_um1m4dNRG0pe4RtHoX4sY9brgp3VZiHA4edI9I44zIvViO-Uc0kFvcG1WV6QDKJkJ_IIjSG_Giss4EBM6QorSunRxs3HnvlQsbHROg9l5rNf09hLGHlldjStBi4eeN_LqP9NEaKzMHZFAu0AFRN7vPJwzvrsMqfmEs3kmmlxhdXnjZqDAW1iokBfLIksZid7EWGA50jygXlY_TaF3HhTsPrOuJnFOMhI1witNcwmic2hqdgi5oME\",\"help_center_id\":0,\"is_silent\":false},\"error_subcode\":4854002,\"error_user_msg\":\"\",\"fbtrace_id\":\"Ar9GEcI4RKzWvbA8Mh26DWh\"}}",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "success",
+        "platform": "instagram",
+        "media_id": "18123139739101641"
+      }
+    ]
   }
 ]
