@@ -3719,5 +3719,27 @@
         "platform": "instagram"
       }
     ]
+  },
+  {
+    "filename": "Business_owner_showcasing_automa\u2026_20261001065252.mp4",
+    "results": [
+      {
+        "status": "failed",
+        "platform": "facebook",
+        "page_id": "1365270799997392",
+        "error": "{\"error\":{\"message\":\"Error validating access token: The session has been invalidated because the user changed their password or Facebook has changed the session for security reasons.\",\"type\":\"OAuthException\",\"code\":190,\"error_subcode\":460,\"fbtrace_id\":\"AnM9PRbri_dsJGxPxLRx5t8\"}}",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "failed",
+        "platform": "facebook_story",
+        "page_id": "1365270799997392",
+        "page_name": "Recepzo"
+      },
+      {
+        "status": "failed",
+        "platform": "instagram"
+      }
+    ]
   }
 ]
